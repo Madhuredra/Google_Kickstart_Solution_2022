@@ -1,0 +1,117 @@
+#include<iostream>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+void dbg_out() { cerr << endl; }
+template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
+#ifdef LOCAL
+#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
+#else
+#define dbg(...)
+#endif
+
+#define fast_io ios_base::sync_with_stdio(0);cin.tie(0); cout.tie(0);
+#define ar array
+#define int long long
+#define ll long long
+#define ld long double
+#define sza(x) ((int)x.size())
+#define all(a) (a).begin(), (a).end()
+#define fr(i,a,b) for(int i=a;i<b;i++)
+#define vi vector<int>
+#define vii vector<vi>
+#define vll vector<ll>
+#define vpii vector<pair<int,int>>
+#define nline endl
+#define maxArr(a) *max_element(a.begin(),a.end())
+
+
+bool isPal(string s){return s==string(s.rbegin(),s.rend());}
+void printArr(int arr[],int n){fr(i,0,n)cout<<arr[i]<<" ";}
+void printVec(vector<int> &v , int n){fr(i,0,n)cout<<v[i]<<" ";}
+
+const int MAX_N = 1e5 + 5;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9;
+const ld EPS = 1e-9;
+
+int SetBit (int n, int x) { return n | (1 << x); }
+int ClearBit (int n, int x) { return n & ~(1 << x); }
+int ToggleBit (int n, int x) { return n ^ (1 << x); }
+bool CheckBit (int n, int x) { return (bool)(n & (1 << x)); }
+
+vector<ll> primes, spf, mobius, phi;
+vector<bool> is_prime;
+
+void sieve(int n) {
+    primes.clear();
+    is_prime.assign(n + 1, 1);
+    spf.assign(n + 1, 0);
+    mobius.assign(n + 1, 0);
+    phi.assign(n + 1, 0);
+    is_prime[0] = is_prime[1] = 0;
+    mobius[1] = phi[1] = 1;
+    for (ll i = 2; i <= n; i++) {
+        if (is_prime[i]) {
+            primes.push_back(i);
+            spf[i] = i;
+            mobius[i] = -1;
+            phi[i] = i - 1;
+        }
+        for (auto p : primes) {
+            if (i * p > n || p > spf[i]) break;
+            is_prime[i * p] = 0;
+            spf[i * p] = p;
+            mobius[i * p] = (spf[i] == p) ? 0 : -mobius[i];
+            phi[i * p] = (spf[i] == p) ? phi[i] * p : phi[i] * phi[p];
+        }
+    }
+}
+void solve(){
+    string s;
+    cin>>s;
+    int sum = 0;
+    for(int i=0;i<s.size();i++){
+        sum += s[i]-'0';
+    }
+    int insert = 0;
+    if(sum%9==0){
+        cout<<s[0]<<insert<<s.substr(1)<<nline;
+    }else{
+        insert = 9 - sum%9;
+        int pos = -1;
+        string ans = "";
+        for(int i=0;i<s.size();i++){
+            if(s[i]-'0'>insert){
+                pos = i;
+                break;
+            }
+        }
+        if(pos==-1){
+            ans += s;
+            ans += to_string(insert);
+        }
+        else{
+            ans += s.substr(0,pos);
+            ans += to_string(insert);
+            ans += s.substr(pos);
+        }
+        cout<<ans<<nline;
+    }
+
+}
+signed main() {
+    fast_io;
+    int tc;
+    cin>>tc;
+    int Case = 1;
+    while(tc--){
+        cout<<"Case #"<<Case<<":"<<" ";
+        solve();
+        Case++;
+    }
+    return 0;
+}
