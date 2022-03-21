@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+#define int long long
+using namespace std;
+
+int cases = 0;
+
+void rr() {
+  cout << "Case #" << cases << ": ";
+}
+
+bool ok;
+
+bool test(string &s, int i, int j) {
+    if (i < 0) return false;
+        while(i < j) {
+            if (s[i] != s[j]) return false;
+            i++, j--;
+    }
+    return true;
+}
+
+void solve(int i, int n, string &s) {
+    if (i == n) {
+        ok = 1;
+        return;
+    }
+    if (s[i] == '?') {
+        s[i] = '0';
+        int a = test(s, i - 4, i);
+        a |= test(s, i - 5, i);
+        if (!a){
+          solve(i + 1, n ,s);
+        }
+        s[i] = '?';
+    }
+    if (s[i] == '?') {
+        s[i] = '1';
+        int a = test(s, i - 4, i);
+        a |= test(s, i - 5, i);
+        if (!a){
+          solve(i + 1, n ,s);
+        }
+        s[i] = '?';
+    }
+    if (s[i] != '?') {
+        int a = test(s, i - 4, i);
+        a |= test(s, i - 5, i);
+        if (!a){
+          solve(i + 1, n , s);
+        }
+    }
+}
+
+void test_case() {
+  int n;
+  cin >> n;
+  string s;
+  cin >> s;  
+  
+  rr();
+  ok = 0;
+  solve(0, n, s);
+  
+  if (ok) {
+    cout << "POSSIBLE";
+  }
+  else cout << "IMPOSSIBLE";
+}
+
+int32_t main() {
+    int tt;
+    cin >> tt;
+    while(tt--) {
+        cases++;
+        test_case();
+        cout << endl;
+    }  
+    return 0;
+}
