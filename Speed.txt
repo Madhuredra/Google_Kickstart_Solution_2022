@@ -120,5 +120,6 @@ signed main()
             continue;
         }
     }
-  return 0;
+  eturn 0;
 }
+// Owner of this solution is Aman Khanna
